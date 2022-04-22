@@ -1,6 +1,7 @@
 package com.psp.quartzscheduler.service;
 
 import com.psp.quartzscheduler.jobs.HelloWorldJob;
+import com.psp.quartzscheduler.listener.TriggerListener;
 import com.psp.quartzscheduler.model.JobData;
 import com.psp.quartzscheduler.model.JobInfo;
 import com.psp.quartzscheduler.utils.SchedulerUtils;
@@ -94,10 +95,19 @@ public class SchedulerService {
         }
     }
 
+    public void storeJobs(JobDetail jobDetail) {
+        try {
+            scheduler.addJob(jobDetail, true, true);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+    }
+
     @PostConstruct
     public void init() {
         try {
             scheduler.start();
+            scheduler.getListenerManager().addTriggerListener(new TriggerListener(this));
         } catch (SchedulerException e) {
             LOG.error(e.getMessage(), e);
         }

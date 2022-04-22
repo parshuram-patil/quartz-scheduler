@@ -4,9 +4,11 @@ import lombok.Builder;
 import lombok.Data;
 import org.quartz.CronExpression;
 
+import java.io.Serializable;
+
 @Data
 @Builder(toBuilder = true)
-public class JobData {
+public class JobData implements Serializable {
 
     private String identity;
     private String callbackData;
